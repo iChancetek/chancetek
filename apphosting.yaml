@@ -1,0 +1,23 @@
+backend:
+  build:
+    runtime: nodejs20
+    buildCommand: npm run build
+  run:
+    runtime: nodejs20
+    entrypoint: npm run start
+  runConfig:
+    minInstances: 0
+    maxInstances: 4
+    cpu: 1
+    memoryMiB: 512
+  env:
+    - variable: NODE_ENV
+      value: production
+    - variable: VITE_OAUTH_PORTAL_URL
+      value: https://chancetek-83687283-61ef9.web.app
+    - variable: VITE_APP_ID
+      value: chancetek-ai-platform
+    - variable: VITE_APP_TITLE
+      value: ChanceTek AI Platform
+    - variable: VITE_APP_LOGO
+      value: /logo.png

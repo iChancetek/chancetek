@@ -1,4 +1,5 @@
-import { useAuth } from "@/_core/hooks/useAuth";
+import React from 'react';
+import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { APP_LOGO, APP_TITLE, getLoginUrl } from "@/const";
 import { Link } from "wouter";
@@ -142,4 +143,3 @@ export default function Home() {
     </div>
   );
 }
-

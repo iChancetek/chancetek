@@ -1,4 +1,11 @@
-import type { CookieOptions, Request } from "express";
+import { Response, CookieOptions } from 'express';
+
+export function setCookie(res: Response, name: string, value: string, options: CookieOptions) {
+    res.cookie(name, value, options);
+}
+
+
+import type { Request } from "express";
 
 const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1", "::1"]);
 

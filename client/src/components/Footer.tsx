@@ -1,3 +1,4 @@
+import React from "react";
 import { Link } from "wouter";
 import { APP_TITLE } from "@/const";
 import { Mail, Phone, MapPin, Linkedin, Twitter, Github } from "lucide-react";
@@ -27,24 +28,16 @@ export default function Footer() {
             <h3 className="font-semibold">Quick Links</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/services">
-                  <a className="text-muted-foreground hover:text-foreground transition-colors">Services</a>
-                </Link>
+                <Link href="/services" className="text-muted-foreground hover:text-foreground transition-colors">Services</Link>
               </li>
               <li>
-                <Link href="/solutions">
-                  <a className="text-muted-foreground hover:text-foreground transition-colors">Solutions</a>
-                </Link>
+                <Link href="/solutions" className="text-muted-foreground hover:text-foreground transition-colors">Solutions</Link>
               </li>
               <li>
-                <Link href="/about">
-                  <a className="text-muted-foreground hover:text-foreground transition-colors">About</a>
-                </Link>
+                <Link href="/about" className="text-muted-foreground hover:text-foreground transition-colors">About</Link>
               </li>
               <li>
-                <Link href="/contact">
-                  <a className="text-muted-foreground hover:text-foreground transition-colors">Contact</a>
-                </Link>
+                <Link href="/contact" className="text-muted-foreground hover:text-foreground transition-colors">Contact</Link>
               </li>
             </ul>
           </div>
@@ -107,4 +100,3 @@ export default function Footer() {
     </footer>
   );
 }
-

@@ -1,21 +1,28 @@
 import { eq, desc } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/mysql2";
+import { drizzle, MySql2Database } from "drizzle-orm/mysql2";
+import { createPool } from 'mysql2/promise';
 import { InsertUser, users, chatConversations, chatMessages } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
-let _db: ReturnType<typeof drizzle> | null = null;
+let db: MySql2Database<Record<string, never>> | null = null;
 
-// Lazily create the drizzle instance so local tooling can run without a DB.
-export async function getDb() {
-  if (!_db && process.env.DATABASE_URL) {
+if (process.env.DATABASE_URL) {
     try {
-      _db = drizzle(process.env.DATABASE_URL);
+        const pool = createPool({ uri: process.env.DATABASE_URL, connectionLimit: 1 });
+        db = drizzle(pool);
     } catch (error) {
-      console.warn("[Database] Failed to connect:", error);
-      _db = null;
+        console.warn("[Database] Failed to connect:", error);
+        db = null;
     }
-  }
-  return _db;
+} else {
+    console.warn("[Database] DATABASE_URL is not set. Database not initialized.");
+}
+
+export { db };
+
+
+export async function getDb() {
+  return db;
 }
 
 export async function upsertUser(user: InsertUser): Promise<void> {
@@ -187,4 +194,3 @@ export async function updateConversationTitle(
     .set({ title, updatedAt: new Date() })
     .where(eq(chatConversations.id, conversationId));
 }
-

@@ -14,21 +14,39 @@ export default function Contact() {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement form submission to backend
-    console.log("Form submitted:", formData);
-    setSubmitted(true);
-    setTimeout(() => {
-      setFormData({ name: "", email: "", company: "", message: "" });
-      setSubmitted(false);
-    }, 3000);
+    setError(null);
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setSubmitted(true);
+        setTimeout(() => {
+          setFormData({ name: "", email: "", company: "", message: "" });
+          setSubmitted(false);
+        }, 3000);
+      } else {
+        const errorData = await response.json();
+        setError(errorData.message || "Form submission failed. Please try again.");
+      }
+    } catch (error) {
+      setError("An unexpected error occurred. Please try again later.");
+      console.error("An error occurred:", error);
+    }
   };
 
   return (
@@ -180,6 +198,11 @@ export default function Contact() {
                     Thank you for your message! We'll get back to you soon.
                   </div>
                 )}
+                {error && (
+                   <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/50 text-red-400 text-sm">
+                     {error}
+                   </div>
+                )}
               </form>
             </div>
           </div>
@@ -222,4 +245,3 @@ export default function Contact() {
     </div>
   );
 }
-
